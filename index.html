@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/50d3628da5.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {box-sizing: 0; margin: 0; padding: 0; font-family: 'Press Start 2P', cursive;}
+        body {
+
+            background-color: rgb(54, 54, 54);
+        }
+        #secretAnswer {
+            background-color: white;
+            padding: 2rem 3rem;
+            font-size: 50px;
+            color: rgb(54, 54, 54);
+            position: absolute;
+            text-align: center;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
+        }
+         
+        #guess {
+            margin: 50px;
+            color: white;
+            outline: 7px solid white;
+            font-size: 50px;
+            background-color: transparent;
+            font-weight: bolder;
+            text-align: center;
+            width: 250px;
+            padding: 20px;
+        }
+
+        header {
+            position: relative;
+            height: 200px;
+            border-bottom: 10px solid white;
+        }
+
+        h1 {
+            position: absolute;
+            top: 0;
+            color: white;
+            font-size: 50px;
+            width: 100%;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .container {
+            margin-top: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            
+        }
+        #BET {
+            padding: 20px 30px;
+            align-self: center;
+            font-weight: bolder;
+            font-size: 30px;
+            background-color: #fff;
+            outline: 0;
+            border: 0;
+            border-radius: 30px 0 30px 0 ;
+            color: rgb(78, 78, 78);
+        }
+        #BET:hover {
+            background-color: rgb(175, 175, 175);
+        }
+        #BET:active {
+            color: rgb(37, 37, 37);
+        }
+
+        #message {
+            font-size:30px;
+            text-align: center;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        .scoreLabel{
+            font-size: 30px;
+            color: white;
+        }
+
+        #reset {
+            position: absolute;
+            left: 60px;
+            font-size: 70px;
+            border: 0;
+            width: fit-content;
+            outline: 0;
+            background-color: transparent;
+            color: white;
+            top: 25px;
+        }
+
+        #reset:hover {
+            color: rgb(165, 165, 165);
+        }
+
+        #reset:active {
+            color: rgb(114, 114, 114);
+        }
+    </style>
+</head>
+<body>
+    <header>
+    <button id="reset" onclick="reset()"><i class="fa-solid fa-rotate"></i></button>
+    <h1> Guess My Number 👀</h1><br>
+    <div id="secretAnswer">?</div> <br>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <input type="number" min="0" max="10" id="guess" placeholder="1-10">
+            <button onclick="play()" id="BET"> BET !</button>
+            <div class="scoreLabel">💯 Score: <span id="scoreLabel">20</span></div>
+        </div>
+    
+    
+    </main>
+
+    <h2 id="message">Game Started...</h1>
+
+    <script>
+        var secretNum = Math.trunc(Math.random() * 10) + 1;
+        console.log(secretNum)
+        var secretAnswer = document.getElementById('secretAnswer');
+        var button = document.getElementById('BET');
+        var scoreLabel = document.getElementById('scoreLabel');
+        let score = 20;
+
+        function lose() {
+            secretAnswer.style.width = '100px';
+            secretAnswer.innerHTML = secretNum;
+            message.innerHTML = "YOU LOSE!";
+            bg.style.backgroundColor = '#ad0505';
+            input.style.backgroundColor = '#a53f3f';
+            button.style.display = "none"}
+
+
+
+        function play() {
+            var guess = document.getElementById("guess");
+            guess = Number(guess.value); 
+            
+            var message = document.getElementById('message');
+            bg = document.querySelector('body');
+            input = document.querySelector('input');
+            console.log(guess)
+
+            if (guess > 10 || guess < 1) {
+                message.innerHTML = "Guess between 1-10 only"}
+
+            else if(guess > secretNum) {
+                message.innerHTML = "Too High <br> Try to guess lower number";
+                input.style.backgroundColor = '#bb0909';
+                score--;
+                scoreLabel.textContent = score;
+                if (score == 0) {
+                    lose();
+                }
+            }
+                    
+
+            else if (guess < secretNum) {
+                message.innerHTML = "Too Low <br> Try to guess higher number";
+                input.style.backgroundColor = '#bb0909';
+                score--;
+                scoreLabel.textContent = score;
+                if (score == 0) {
+                    lose();
+                }
+            
+            }
+
+            else if(guess == null || guess == ''){
+                message.innerHTML = "Come On! Make A Guess! 😒";
+                input.style.backgroundColor = '#3a3a3a';}
+
+             else if (guess == secretNum) {
+                secretAnswer.style.width = '100px';
+                secretAnswer.innerHTML = secretNum;
+                message.innerHTML = "Awesome! You Got My Number!🎉";
+                bg.style.backgroundColor = '#60b347';
+                input.style.backgroundColor = '#60b347';
+                button.style.display = "none"}
+            
+        }
+        function reset() {
+            secretNum = Math.trunc(Math.random() * 10) + 1;
+            console.log(secretNum)
+            console.log(guess)
+            score = 20;
+            scoreLabel.innerHTML = score;
+            message.innerHTML = "Game Started..."
+            guess.value = '';
+            button.style.display = "block";
+            document.querySelector('body').style.backgroundColor = "rgb(54, 54, 54)";
+            input.style.backgroundColor = "#3a3a3a";
+            secretAnswer.innerHTML = "?";
+            
+        } 
+
+    </script>
+</body>
+</html>
